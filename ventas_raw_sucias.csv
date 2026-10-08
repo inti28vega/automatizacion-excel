@@ -1,0 +1,7 @@
+ID_Transaccion,Vendedor,Monto,Estado
+101,Carlos,1500.0,Completado
+102,Ana,-200.0,Completado
+103,  Pedro ,800.0,Completado
+104,,1200.0,Completado
+105,Carlos,0.0,Pendiente
+105,Carlos,1500.0,Completado
