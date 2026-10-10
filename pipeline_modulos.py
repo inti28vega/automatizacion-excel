@@ -22,30 +22,27 @@ def extraer_y_consolidar_datos(directorio_base):
         return pd.concat(registros, ignore_index=True)
     return pd.DataFrame()
 
-def auditar_y_limpiar_datos(df):
-    """Limpia textos, aisla errores y retorna DataFrames separados (Limpio y Errores)."""
+def auditar_y_limpiar_datos(df, col_vendedor, col_monto):
+    """Limpia textos, aisla errores y retorna DataFrames usando columnas dinámicas."""
     df_temp = df.copy()
     
-    # Normalización de textos
-    if "Vendedor" in df_temp.columns:
-        df_temp["Vendedor"] = df_temp["Vendedor"].astype(str).str.strip()
+    if col_vendedor in df_temp.columns:
+        df_temp[col_vendedor] = df_temp[col_vendedor].astype(str).str.strip()
     
-    # Identificación de anomalías
-    nulos = df_temp[df_temp["Vendedor"] == "None"] if "Vendedor" in df_temp.columns else pd.DataFrame()
-    montos_invalidos = df_temp[df_temp["Monto"] <= 0] if "Monto" in df_temp.columns else pd.DataFrame()
+    nulos = df_temp[df_temp[col_vendedor] == "None"] if col_vendedor in df_temp.columns else pd.DataFrame()
+    montos_invalidos = df_temp[df_temp[col_monto] <= 0] if col_monto in df_temp.columns else pd.DataFrame()
     
     df_errores = pd.concat([nulos, montos_invalidos]).drop_duplicates()
     
-    # Data limpia
     df_limpio = df_temp[
-        (df_temp["Vendedor"] != "None") & 
-        (df_temp["Monto"] > 0)
-    ].drop_duplicates() if "Monto" in df_temp.columns else df_temp
+        (df_temp[col_vendedor] != "None") & 
+        (df_temp[col_monto] > 0)
+    ].drop_duplicates() if col_monto in df_temp.columns else df_temp
     
     return df_limpio, df_errores
 
-def aplicar_formato_excel(archivo_salida):
-    """Aplica estilos profesionales al archivo Excel generado."""
+def aplicar_formato_excel(archivo_salida, formato_moneda):
+    """Aplica estilos profesionales y el formato de moneda configurado."""
     wb = load_workbook(archivo_salida)
     ws = wb.active
 
@@ -58,7 +55,7 @@ def aplicar_formato_excel(archivo_salida):
         cell.alignment = Alignment(horizontal="center")
 
     for row in range(2, ws.max_row + 1):
-        ws.cell(row=row, column=2).number_format = '"$"#,##0.00'
+        ws.cell(row=row, column=2).number_format = formato_moneda
 
     for col in ws.columns:
         max_len = max(len(str(cell.value or '')) for cell in col)

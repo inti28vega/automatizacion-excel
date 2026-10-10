@@ -1,0 +1,8 @@
+{
+  "directorio_origen": "reportes_anuales",
+  "archivo_salida": "Reporte_Parametrizado_Final.xlsx",
+  "log_errores": "log_errores_parametrizado.csv",
+  "columna_vendedor": "Vendedor",
+  "columna_monto": "Monto",
+  "moneda_formato": "\"$\"#,##0.00"
+}
