@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inti Vega | Automatización de Datos en Excel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #F8FAFC;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-dark: #0F172A;
+            --text-muted: #475569;
+            --brand-purple: #4338CA;
+            --brand-purple-dark: #312E81;
+            --border-color: #E2E8F0;
+            --accent-green: #10B981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            /* Patrón de Olas Japonesas Seigaiha tradicional */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='40' viewBox='0 0 80 40'%3E%3Cpath d='M0 40a40 40 0 0 1 40-40 40 40 0 0 1 40 40H78A38 38 0 0 0 40 2 38 38 0 0 0 2 40zm0-8a32 32 0 0 1 32-32 32 32 0 0 1 32 32h-2a30 30 0 0 0-30-30A30 30 0 0 0 2 32zm0-8a24 24 0 0 1 24-24 24 24 0 0 1 24 24h-2a22 22 0 0 0-22-22A22 22 0 0 0 2 24zm0-8a16 16 0 0 1 16-16 16 16 0 0 1 16 16h-2a14 14 0 0 0-14-14A14 14 0 0 0 2 16zm0-8a8 8 0 0 1 8-8 8 8 0 0 1 8 8H16a6 6 0 0 0-6-6 6 6 0 0 0-6 6z' fill='%234338ca' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navbar Sutil */
+        nav {
+            padding: 24px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(248, 250, 252, 0.92);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.5px;
+            color: var(--brand-purple-dark);
+        }
+
+        .nav-tag {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: var(--bg-card);
+        }
+
+        /* Hero Minimalista */
+        .hero {
+            padding: 90px 8% 70px;
+            max-width: 1100px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--brand-purple);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.1rem, 4.5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -1.2px;
+            line-height: 1.15;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--brand-purple-dark);
+            color: #FFFFFF;
+            padding: 16px 32px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--brand-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 56, 202, 0.15);
+        }
+
+        /* Sección de Servicios */
+        .section {
+            padding: 70px 8%;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--brand-purple-dark);
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: var(--brand-purple);
+            transform: translateY(-2px);
+        }
+
+        .card-num {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--brand-purple);
+            margin-bottom: 14px;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        /* Comparativa Antes / Después */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 24px;
+        }
+
+        .comp-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .comp-card.before {
+            border-left: 4px solid #EF4444;
+        }
+
+        .comp-card.after {
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .comp-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+
+        .before .comp-tag { color: #EF4444; }
+        .after .comp-tag { color: var(--accent-green); }
+
+        .comp-card ul {
+            list-style: none;
+        }
+
+        .comp-card li {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* CTA Final Banner */
+        .cta-banner {
+            background-color: var(--brand-purple-dark);
+            color: white;
+            padding: 70px 8%;
+            border-radius: 12px;
+            margin: 30px 8% 70px;
+            text-align: center;
+        }
+
+        .cta-banner h2 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 14px;
+        }
+
+        .cta-banner p {
+            color: #C7D2FE;
+            font-size: 1.05rem;
+            max-width: 620px;
+            margin: 0 auto 28px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .btn-whatsapp {
+            display: inline-block;
+            background-color: #25D366;
+            color: white;
+            padding: 16px 36px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #20ba5a;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            padding: 40px 8%;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegación Sutil -->
+    <nav>
+        <div class="logo">INTI VEGA</div>
+        <div class="nav-tag">Automatización de Datos</div>
+    </nav>
+
+    <!-- Header Principal -->
+    <section class="hero">
+        <span class="hero-badge">Servicio para PYMEs</span>
+        <h1>Paso reportes desordenados de Excel a informes limpios y automáticos en segundos.</h1>
+        <p>Elimina horas de trabajo manual, corrige errores en tus tablas y obtén reportes formateados sin mover un solo dedo.</p>
+        <a href="https://wa.me/?text=Hola%20Inti,%20me%20interesa%20la%20Auditor%C3%ADa%20Gratuita%20de%2024h%20para%20mi%20empresa" class="btn-primary" target="_blank">Pedir auditoría gratuita de 24h</a>
+    </section>
+
+    <!-- Sección de Servicios -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Lo que hago por tu negocio</h2>
+        </div>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-num">01 / CONSOLIDACIÓN</div>
+                <h3>Unir varios archivos</h3>
+                <p>Junto archivos de distintas carpetas o sucursales en un solo Excel consolidado de forma instantánea.</p>
+            </div>
+            <div class="card">
+                <div class="card-num">02 / AUDITORÍA</div>
+                <h3>Limpiar errores y vacíos</h3>
+                <p>Detecto montos fuera de rango, filas vacías o datos duplicados antes de que entregues el reporte final.</p>
+            </div>
+            <div class="card">
+                <div class="card-num">03 / REPORTES</div>
+                <h3>Formato ejecutivo</h3>
+                <p>Aplico un diseño limpio con bordes definidos, encabezados corporativos y totales calculados automáticamente.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparativa Visual -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">El cambio directo en tus días</h2>
+        </div>
+        <div class="comparison-grid">
+            <div class="comp-card before">
+                <div class="comp-tag">Sin automatizar</div>
+                <ul>
+                    <li>✕ Horas perdidas uniendo tablas a mano los cierres de semana.</li>
+                    <li>✕ Archivos desalineados y propensos a errores de tipeo.</li>
+                    <li>✕ Retraso para revisar los números de las ventas.</li>
+                </ul>
+            </div>
+            <div class="comp-card after">
+                <div class="comp-tag">Con el script listo</div>
+                <ul>
+                    <li>✓ El reporte completo en 5 segundos.</li>
+                    <li>✓ Tablas estilizadas, uniformes y fáciles de leer.</li>
+                    <li>✓ Totales calculados por código sin descuadres.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final Banner -->
+    <div class="cta-banner">
+        <h2>¿Quieres ver tu reporte limpio?</h2>
+        <p>Envíame una muestra de tu archivo de la semana pasada. En menos de 24 horas te devuelvo un informe consolidado, auditado y listo para usar, totalmente gratis.</p>
+        <a href="https://wa.me/?text=Hola%20Inti,%20quiero%20enviarte%20un%20reporte%20de%20prueba%20esta%20semana" class="btn-whatsapp" target="_blank">Enviar reporte por WhatsApp</a>
+    </div>
+
+    <footer>
+        <p>© 2026 Inti Vega — Automatización de Datos y Procesos.</p>
+    </footer>
+
+</body>
+</html>
